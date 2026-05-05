@@ -1,0 +1,22 @@
+name: GameHub
+options:
+  bundleIdPrefix: com.gamehub.official
+targets:
+  GameHub:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources: [GameHub]
+    settings:
+      base:
+        INFOPLIST_FILE: GameHub/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        PRODUCT_BUNDLE_IDENTIFIER: com.gamehub.emulator.pro
+        MARKETING_VERSION: 1.1
+        CURRENT_PROJECT_VERSION: 1
+        TARGETED_DEVICE_FAMILY: "1,2" # iPhone and iPad
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationLandscapeLeft, UIInterfaceOrientationLandscapeRight]
+        UILaunchStoryboardName: LaunchScreen
+        # High Performance Settings
+        ENABLE_BITCODE: NO
+        DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
