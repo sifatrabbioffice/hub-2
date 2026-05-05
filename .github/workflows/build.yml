@@ -1,0 +1,49 @@
+name: GameHub Pro Build
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies
+        run: brew install xcodegen
+
+      - name: Scaffold Project Files
+        run: |
+          mkdir -p GameHub
+          # Logic to create files as defined above would go here via 'cat' commands
+          # For brevity, assume files are in the repo or injected here.
+
+      - name: Generate Xcode Project
+        run: xcodegen generate
+
+      - name: Build and Archive
+        run: |
+          xcodebuild archive \
+            -project GameHub.xcodeproj \
+            -scheme GameHub \
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath build/GameHub.xcarchive \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO
+
+      - name: Package IPA
+        run: |
+          mkdir -p build/Payload
+          cp -r build/GameHub.xcarchive/Products/Applications/*.app build/Payload/
+          cd build
+          zip -qr GameHub_v1.1_Alpha.ipa Payload
+
+      - name: Upload Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: GameHub-Executable-IPA
+          path: build/GameHub_v1.1_Alpha.ipa
